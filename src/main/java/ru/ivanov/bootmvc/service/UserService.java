@@ -13,7 +13,7 @@ public interface UserService {
 
     void updateUser(User updateUser);
 
-    void removeUserById(long id);
+    boolean removeUserById(long id);
 
     void save(User user);
     String getEncodedPassword(Long id);

@@ -11,7 +11,7 @@
 <div>
     <form method="POST" action="/process_login">
         <!--После добавления в login-form данной строки, Spring Security внедрит отправку Token в каждую форму-->
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
         <!--Spring Security будет ждать поля именно с такими названиями: "username" и "password" !-->
         <!--И дальше с помощью AuthProvider будет сравнивать со значеними из БД-->
         <div class="container">

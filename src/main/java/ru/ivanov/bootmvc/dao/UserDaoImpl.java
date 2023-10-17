@@ -1,4 +1,4 @@
-package ru.ivanov.bootmvc.repository;
+package ru.ivanov.bootmvc.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.ivanov.bootmvc.model.User;
@@ -18,7 +18,7 @@ public class UserDaoImpl implements UserDao {
     @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
         TypedQuery<User> query = entityManager
-                .createQuery("FROM User u left join fetch u.roles", User.class);
+                .createQuery("SELECT DISTINCT u FROM User u left join fetch u.roles", User.class);
         return query.getResultList();
     }
 
@@ -33,8 +33,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void removeUserById(long id) {
-        entityManager.createQuery("delete from User where id = :id").setParameter("id", id).executeUpdate();
+    public boolean removeUserById(long id) {
+        return entityManager.createQuery("delete from User where id = :id")
+                .setParameter("id", id).executeUpdate() > 0;
     }
 
     @Override

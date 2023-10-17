@@ -1,4 +1,4 @@
-package ru.ivanov.bootmvc.repository;
+package ru.ivanov.bootmvc.dao;
 
 import ru.ivanov.bootmvc.model.User;
 
@@ -13,7 +13,7 @@ public interface UserDao {
 
     void updateUser(User updateUser);
 
-    void removeUserById(long id);
+    boolean removeUserById(long id);
 
     void save(User user);
     String getPassword(Long id);
