@@ -76,89 +76,21 @@ public class AdminRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
     @PostMapping("/admin")
-    public ResponseEntity<User> addNewUser(@RequestBody @Valid User newUser, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            StringBuilder info_about_errors = new StringBuilder(); //Создали строку, в которую поместим ошибки
-            List<FieldError> fields_of_errors = bindingResult.getFieldErrors(); //Получили список из полей, где произошли ошибки
-
-            for (FieldError error : fields_of_errors) { //Прошлись по ошибкам
-                info_about_errors.append(error.getField()) // в строку добавили само поле
-                        .append(" - ")
-                        .append(error.getDefaultMessage()) //добавили сообщение ошибки
-                        .append(";");
-            }
-            throw new UserNotCreatedException(info_about_errors.toString());
-        }
+    public ResponseEntity<User> addNewUser(@RequestBody User newUser) {
         userService.save(newUser);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 
     }
     @PatchMapping("/admin/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userFromWebPage, @PathVariable("id") Long id) {
-        System.out.println("PATCH");
         userService.updateUser(userFromWebPage);
-        System.out.println("----------------------------");
         return new ResponseEntity<>(userFromWebPage, HttpStatus.OK);
     }
-    @DeleteMapping("/admin /{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         if(userService.removeUserById(id) == false){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User has been deleted");
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-//    @GetMapping("/admin")
-//    public String getUsers(Model model, Principal principal) {
-//        if (model.containsAttribute("errorUser"))
-//            model.addAttribute("user", model.getAttribute("errorUser"));
-//        model.addAttribute("users", userService.getAllUsers());
-//        model.addAttribute("allRoles", roleRepository.findAll());
-//        model.addAttribute("userPrincipal",userService.findByUserName(principal.getName()));
-//        return "admin-panel";
-//    }
-
-//    @PatchMapping("/admin/{id}")
-//    public String updatePerson(@ModelAttribute("user") User updateUser,
-//                               @RequestParam String[] selectedRoles,
-//                               @RequestParam Long id,
-//                               RedirectAttributes redirectAttributes,Model model
-//    ) {
-//        //??? убрать цикл по ролям и изменить параметр формы name="selectedRoles" на name="roles"
-//        // чтобы сразу получать юзера с ролями
-//        for (String role : selectedRoles) {
-//            if (role.equals("ROLE_USER")) updateUser.getRoles().add(roleDao.getRoleByName("ROLE_USER"));
-//            if (role.equals("ROLE_ADMIN")) updateUser.getRoles().add(roleDao.getRoleByName("ROLE_ADMIN"));
-//            if (role.equals("ROLE_GUEST")) updateUser.getRoles().add(roleDao.getRoleByName("ROLE_GUEST"));
-//        }
-//        userService.updateUser(updateUser);
-//        return "redirect:/admin";
-//    }
-//
-//    @DeleteMapping("/admin/{id}")
-//    public String deletePerson(@PathVariable("id") long id) {
-//        userService.removeUserById(id);
-//        return "redirect:/admin";
-//    }
-//
-//    @PostMapping("/admin")
-//    public String create(@ModelAttribute @Validated User user, BindingResult bindingResult,
-//                         RedirectAttributes redirectAttributes, @RequestParam(required = false) String[] selectedRoles ) {
-//        if(selectedRoles != null) {
-//            for (String role : selectedRoles) {
-//                if (role.equals("ROLE_USER")) user.getRoles().add(roleDao.getRoleByName("ROLE_USER"));
-//                if (role.equals("ROLE_ADMIN")) user.getRoles().add(roleDao.getRoleByName("ROLE_ADMIN"));
-//                if (role.equals("ROLE_GUEST")) user.getRoles().add(roleDao.getRoleByName("ROLE_GUEST"));
-//            }
-//        }
-//        if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-//            redirectAttributes.addFlashAttribute("errorUser", user);
-//            return "redirect:/admin";
-//        }
-//        String encodedPassword = passwordEncoder.encode(user.getPassword());
-//        user.setPassword(encodedPassword);
-//        userService.save(user);
-//        return "redirect:/admin";
-//    }
 }

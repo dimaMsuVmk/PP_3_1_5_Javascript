@@ -14,21 +14,15 @@
 <!--После добавление в login-form отправки CSRF-token Заменим href="/logout" на форму
     тк теперь у нас POST запрос-->
 <div class="container-fluid vh-100">
-    <!--    <header class="row p-3 text-white bg-dark">-->
-    <!--        <div class="col-9">-->
-    <!--                <span class="align-middle px-2">-->
-    <!--                    <span class="fw-bold" th:text="${userPrincipal.getEmail()} "></span>-->
-    <!--                    with roles:-->
-    <!--                    <span th:each="role:${userPrincipal.getRoles()}"-->
-    <!--                          th:text="${role.getName().replace('ROLE_','')}+'  '"></span>-->
-    <!--                </span>-->
-    <!--        </div>-->
-    <!--        <div class="col-3 text-end">-->
-    <!--            <form th:action="@{/logout}" th:method="POST">-->
-    <!--                <button class="btn btn-dark text-secondary fw-bold" type="submit">Logout</button>-->
-    <!--            </form>-->
-    <!--        </div>-->
-    <!--    </header>-->
+        <header class="row p-3 text-white bg-dark">
+            <div class="col-9" id="navbarBrandAdmin">
+            </div>
+            <div class="col-3 text-end">
+                <form th:action="@{/logout}" th:method="POST">
+                    <button class="btn btn-dark text-secondary fw-bold" type="submit">Logout</button>
+                </form>
+            </div>
+        </header>
     <!--СОЗДАЕМ ВКЛАДКИ СЛЕВА, у которых ниже раскрывающиеся блоки под id #v-pills-admin" и под id "#v-pills-user" будет панель юзера
     У вкладки Admin будут еще две вкладки: Users table с id="nav-users_table-tab" и New user id="nav-new_user-tab"-->
     <div class="row">
@@ -58,7 +52,7 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" data-bs-toggle="tab"
                                     data-bs-target="#nav-users_table" type="button" role="tab"
-                                    aria-controls="nav-users_table" aria-selected="true">Users table
+                                    aria-controls="nav-users_table" aria-selected="true" id="usersTable">Users table
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -142,14 +136,6 @@
                                                                placeholder="vvedite password"/>
                                                         <br/>
                                                         <div id="div_edit"></div>
-<!--                                                        <div th:each="role : ${allRoles}">-->
-<!--                                                            <label th:for="${role}" th:text="${role}"/>-->
-<!--                                                            <input type="checkbox"-->
-<!--                                                                   name="selectedRoles"-->
-<!--                                                                   th:checked="${user.hasRole('__${role.name}__')}"-->
-<!--                                                                   th:id="${role}"-->
-<!--                                                                   th:value="${role}">-->
-<!--                                                        </div>-->
                                                         <br/>
 
                                                         <div class="modal-footer">
@@ -171,97 +157,144 @@
                                 </div>
                             </div>
                             <!--End of "EDIT"-->
+                            <!--  ------------------------------- Modal Window "DELETE" -------------------------------  -->
+                            <div class="modal" th:id="deleteModal" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Заголовок модального окна DELETE -->
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Delete user</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <!-- Основное содержимое модального окна DELETE -->
+                                        <div class="modal-body text-center">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                    <form id="form_Delete">
+                                                        <label for="edit_id">Id</label>
+                                                        <input class="form-control"
+                                                               type="number"
+                                                               id="delete_id"
+                                                               th:name="id" disabled/>
+                                                        <br/>
+                                                        <label for="edit_firstName">FirstName </label>
+                                                        <input class="form-control"
+                                                               type="text"
+                                                               id="delete_firstName"
+                                                               th:name="firstName"
+                                                               placeholder="firstName" disabled/>
+                                                        <br/>
+                                                        <label for="edit_lastName">LastName </label>
+                                                        <input class="form-control"
+                                                               type="text"
+                                                               id="delete_lastName"
+                                                               th:name="lastName"
+                                                               placeholder="lastName" disabled/>
+                                                        <br/>
+                                                        <label for="edit_email">Email</label>
+                                                        <input class="form-control"
+                                                               type="text"
+                                                               id="delete_email"
+                                                               th:name="email"
+                                                               placeholder="email" disabled/>
+                                                        <br/>
+                                                        <div id="div_delete"></div>
+                                                        <br/>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal" id="delete_close">Close
+                                                            </button>
+                                                            <input type="submit" class="btn btn-danger"
+                                                                   value="Delete"/>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!---->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--End of "DELETE"-->
                         </div>
                         <!--Это блок под id="#nav-new_user", который раскрывается, когда
                             нажимаешь вторую вкладку button "New user" под id "nav-new_user-tab"-->
                         <div class="tab-pane fade" id="nav-new_user" role="tabpanel" aria-labelledby="nav-new_user-tab">
-                            <!--                            <div class="text-center">-->
-                            <!--                                <div class="row justify-content-center">-->
-                            <!--                                    <div class="col-md-4">-->
-                            <!--                                        <form th:method="POST" th:action="@{/admin}" th:object="${user}">-->
-                            <!--                                            <label for="new_firstName">FirstName </label>-->
-                            <!--                                            <input class="form-control" type="text"-->
-                            <!--                                                   th:value="*{firstName}"-->
-                            <!--                                                   id="new_firstName" th:name="firstName"-->
-                            <!--                                                   placeholder="vvedite firstName">-->
-                            <!--                                            <br/>-->
-                            <!--                                            <label for="new_lastName">LastName </label>-->
-                            <!--                                            <input class="form-control" type="text"-->
-                            <!--                                                   th:value="*{lastName}"-->
-                            <!--                                                   id="new_lastName" th:name="lastName"-->
-                            <!--                                                   placeholder="vvedite lastName">-->
-                            <!--                                            <br/>-->
-                            <!--                                            <label for="new_email">Email</label>-->
-                            <!--                                            <input class="form-control" type="text"-->
-                            <!--                                                   th:value="*{email}"-->
-                            <!--                                                   id="new_email" th:name="email"-->
-                            <!--                                                   placeholder="vvedite email">-->
+                            <div class="text-center">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4">
+                                        <form id="formNew">
+                                            <label for="new_firstName">FirstName </label>
+                                            <input class="form-control" type="text"
+                                                   id="new_firstName" th:name="firstName"
+                                                   placeholder="vvedite firstName">
+                                            <br/>
+                                            <label for="new_lastName">LastName </label>
+                                            <input class="form-control" type="text"
+                                                   id="new_lastName" th:name="lastName"
+                                                   placeholder="vvedite lastName">
+                                            <br/>
+                                            <label for="new_email">Email</label>
+                                            <input class="form-control" type="text"
+                                                   id="new_email" th:name="email"
+                                                   placeholder="vvedite email">
 
-                            <!--                                            <br/>-->
-                            <!--                                            <label for="new_password">Password</label>-->
-                            <!--                                            <input class="form-control" type="password"-->
-                            <!--                                                   id="new_password"-->
-                            <!--                                                   th:name="password"-->
-                            <!--                                                   placeholder="vvedite password">-->
-                            <!--                                            <br/>-->
-                            <!--                                            <p>Roles:</p>-->
-                            <!--                                            <div th:each="role : ${allRoles}">-->
-                            <!--                                                <label th:for="${role}" th:text="${role}"/>-->
-                            <!--                                                <input type="checkbox" name="selectedRoles"-->
-                            <!--                                                       th:checked="${user.hasRole('__${role.name}__')}"-->
-                            <!--                                                       th:id="${role}" th:value="${role}">-->
-                            <!--                                            </div>-->
-                            <!--                                            <br/>-->
-                            <!--                                            <button type="submit" class="btn btn-success">Add New User</button>-->
-                            <!--                                        </form>-->
-                            <!--                                        <div th:if="${errors}">-->
-                            <!--                                            <p style="color : red" th:each="error : ${errors}"-->
-                            <!--                                               th:text="${error.defaultMessage}">Error message-->
-                            <!--                                            <p/>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
+                                            <br/>
+                                            <label for="new_password">Password</label>
+                                            <input class="form-control" type="password"
+                                                   id="new_password"
+                                                   th:name="password"
+                                                   placeholder="vvedite password">
+                                            <br/>
+
+                                            <p>Roles:</p>
+                                            <div id="div_create"></div>
+                                            <br/>
+
+                                            <button type="submit" class="btn btn-success">Add New User</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- Здесь указывается вся информация при нажатии кнопки USER -->
                 <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
-                    <!--                    <h2><b>User information-page</b></h2>-->
-                    <!--                    <div class="border">-->
-                    <!--                        <table class="table border table-striped">-->
-                    <!--                            <thead>-->
-                    <!--                            <h4> About user</h4>-->
-                    <!--                            <tr>-->
-                    <!--                                <th>Id</th>-->
-                    <!--                                <th>FirstName</th>-->
-                    <!--                                <th>LastName</th>-->
-                    <!--                                <th>Email</th>-->
-                    <!--                                <th>Role</th>-->
-                    <!--                            </tr>-->
-                    <!--                            </thead>-->
-                    <!--                            <tbody>-->
-                    <!--                            <tr>-->
-                    <!--                                <td th:text="${userPrincipal.id}"> Id</td>-->
-                    <!--                                <td th:text="${userPrincipal.firstName}"> FirstName</td>-->
-                    <!--                                <td th:text="${userPrincipal.lastName}"> LastName</td>-->
-                    <!--                                <td th:text="${userPrincipal.email}"> Email</td>-->
-                    <!--                                <div th:each="role : ${userPrincipal.roles}">-->
-                    <!--                                    <td th:text="${role.toString()}">Role Name</td>-->
-                    <!--                                </div>-->
-                    <!--                            </tr>-->
-                    <!--                            </tbody>-->
-                    <!--                        </table>-->
-                    <!--                    </div>-->
+                    <h2><b>User information-page</b></h2>
+                    <div class="border">
+                        <table class="table border table-striped">
+                            <thead>
+                            <h4> About user</h4>
+                            <tr>
+                                <th>Id</th>
+                                <th>FirstName</th>
+                                <th>LastName</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tableAdmin">
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!--Подключаем JavaScript-файл, который сами создали-->
-<script type="text/javascript" src="/table-users.js"></script>
-<script type="text/javascript" src="/open_and_fill_modal.js"></script>
-<script type="text/javascript" src="/edit-modal.js"></script>
+<script type="text/javascript" src="/js/table-users.js"></script>
+<script type="text/javascript" src="/js/open_and_fill_modal.js"></script>
+<script type="text/javascript" src="/js/edit-modal.js"></script>
+<script type="text/javascript" src="/js/delete-modal.js"></script>
+<script type="text/javascript" src="/js/form-new.js"></script>
+<script type="text/javascript" src="/js/current-admin.js"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

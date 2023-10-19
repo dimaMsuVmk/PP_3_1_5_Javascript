@@ -1,8 +1,8 @@
 const URLEdit = "http://localhost:8080/api/admin/";
 const datatableElem = document.getElementById("bodyUsers");
 // const editElem = new bootstrap.Modal(document.getElementById('windowEdit'), options);
-let tableStr = '';
 const fillTable = (users) => {
+    let tableStr = '';
     users.forEach((user) => {
         tableStr += `<tr>
                           <td>${user.id}</td>

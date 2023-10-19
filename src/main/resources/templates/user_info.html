@@ -16,13 +16,8 @@
     тк теперь у нас POST запрос-->
 <div class="container-fluid vh-100">
     <header class="row p-3 text-white bg-dark">
-        <div class="col-9">
-                <span class="align-middle px-2">
-                    <span class="fw-bold" th:text="${userPrincipal.getEmail()} "></span>
-                    with roles:
-                    <span th:each="role:${userPrincipal.getRoles()}"
-                          th:text="${role.getName().replace('ROLE_','')}+'  '"></span>
-                </span>
+        <div class="col-9" id="navbarBrandUser">
+<!--script -->
         </div>
         <div class="col-3 text-end">
             <form th:action="@{/logout}" th:method="POST">
@@ -55,16 +50,8 @@
                         <th>Role</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td th:text="${userPrincipal.id}"> Id</td>
-                        <td th:text="${userPrincipal.firstName}"> FirstName</td>
-                        <td th:text="${userPrincipal.lastName}"> LastName</td>
-                        <td th:text="${userPrincipal.email}"> Email</td>
-                        <div th:each="role : ${userPrincipal.roles}">
-                            <td th:text="${role.toString()}">Role Name</td>
-                        </div>
-                    </tr>
+                    <tbody id="tableUser">
+<!--                    script                -->
                     </tbody>
                 </table>
             </div>
@@ -73,6 +60,7 @@
 
     </div>
 </div>
+<script type="text/javascript" src="/js/current-user.js"></script>
 
 <!--Подключаем JavaScript бутстрапа, включая Popper для позиционирования раскрывающихся списков,
                   всплывающие сообщения и всплывающие подсказки. Размещается перед закрывающим тегом </body>-->

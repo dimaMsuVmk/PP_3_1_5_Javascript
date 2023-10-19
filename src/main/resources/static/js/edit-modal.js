@@ -3,12 +3,29 @@ let formEdit = document.forms["form_Edit"];
 async function editModal(id) {
     const modalEdit = new bootstrap.Modal(document.querySelector('#editModal'));
     await open_fill_modal(formEdit, modalEdit, id);
+    let userModal = await getUserById(id);
+    let nameInputs = formEdit.querySelectorAll("[name='selectedRoles']");
+    for (let i = 0; i < nameInputs.length; i++) {
+        for(let j = 0; j < userModal.roles.length;j++)
+            if (nameInputs[i].id === 'role_Edit_' + userModal.roles[j].id) {
+                nameInputs[i].checked = true;
+                //rolesForEdit.push(user.roles[j]);
+            }
+    }
     editUser();
 }
 
 function editUser() {
     formEdit.addEventListener("submit", ev => {
         ev.preventDefault();
+        let nameInputs = formEdit.querySelectorAll("[name='selectedRoles']");
+        let rolesForEdit = [];
+        for (let i = 0; i < nameInputs.length; i++) {
+            if (nameInputs[i].checked) rolesForEdit.push({
+                id: nameInputs[i].value,
+                name: nameInputs[i].text
+            });
+        }
 
         fetch(URLEdit + formEdit.id.value, {
             method: 'PATCH',
@@ -21,7 +38,7 @@ function editUser() {
                 lastName: formEdit.lastName.value,
                 email: formEdit.email.value,
                 password: formEdit.password.value,
-                roles: []
+                roles: rolesForEdit,
             })
         }).then(() => {
             $('#edit_close').click();
