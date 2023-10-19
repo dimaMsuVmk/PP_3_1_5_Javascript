@@ -1,4 +1,4 @@
-package ru.ivanov.bootmvc.security;
+package ru.ivanov.bootmvc.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,8 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()//-------------------ЗАЧЕМ ?---------
                 .authorizeRequests()
-                .antMatchers("/api/admin","/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/login", "/registration", "/error").permitAll()
+//                .antMatchers("/api/admin","/api/admin/**").hasRole("ADMIN")
+//                .antMatchers("/login", "/registration", "/error").permitAll()
+                .antMatchers("/**").permitAll()///////
+
                 .anyRequest().hasAnyRole("USER","ADMIN")
                 //.anyRequest().authenticated()
                 .and()

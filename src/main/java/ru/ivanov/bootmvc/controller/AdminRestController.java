@@ -96,7 +96,9 @@ public class AdminRestController {
     }
     @PatchMapping("/admin/{id}")
     public ResponseEntity<User> updateUser(@RequestBody User userFromWebPage, @PathVariable("id") Long id) {
+        System.out.println("PATCH");
         userService.updateUser(userFromWebPage);
+        System.out.println("----------------------------");
         return new ResponseEntity<>(userFromWebPage, HttpStatus.OK);
     }
     @DeleteMapping("/admin /{id}")
