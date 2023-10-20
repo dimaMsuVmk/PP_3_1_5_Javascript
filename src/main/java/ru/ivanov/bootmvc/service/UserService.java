@@ -9,6 +9,7 @@ public interface UserService {
     List<User> getAllUsers();
 
     User getUserById(long id);
+
     User findByUserName(String email);
 
     void updateUser(User updateUser);
@@ -16,5 +17,6 @@ public interface UserService {
     boolean removeUserById(long id);
 
     void save(User user);
+
     String getEncodedPassword(Long id);
 }

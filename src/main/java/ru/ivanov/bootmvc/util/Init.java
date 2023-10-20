@@ -26,9 +26,9 @@ public class Init {
         roleRepository.save(USER);
         roleRepository.save(ADMIN);
         roleRepository.save(GUEST);
-        User user = new User("user","Ivanov","user@bk.ru", encoder.encode("user"));
+        User user = new User("user", "Ivanov", "user@bk.ru", encoder.encode("user"));
         user.getRoles().add(USER);
-        User admin = new User("admin","Rublev","admin@bk.ru", encoder.encode("admin"));
+        User admin = new User("admin", "Rublev", "admin@bk.ru", encoder.encode("admin"));
         admin.getRoles().add(ADMIN);
         userService.save(user);
         userService.save(admin);

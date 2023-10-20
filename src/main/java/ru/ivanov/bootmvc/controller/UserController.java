@@ -13,18 +13,11 @@ import ru.ivanov.bootmvc.model.User;
 @RequestMapping("/user")
 public class UserController {
     @GetMapping("")
-    public String showUserInfo(Model model){
-        //получаем объект Authentication, который мы положили в Cookie сессии при аутентификации
-        //в классе AuthProviderImpl, в его методе configure
-        //UsernamePasswordAuthenticationToken implements Authentication
-        //return new UsernamePasswordAuthenticationToken(userDetails,password, Collections.emptyList());
+    public String showUserInfo(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //из Authentication(который является объектом UsernamePasswordAuthenticationToken) мы получим
-        //доступ к UserDetails/User,который в него положили при аутентификации
-        //UsernamePasswordAuthenticationToken(Object principal, Object credentials,Collection authorities)
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = (User) userDetails;
-        model.addAttribute("userPrincipal",user);
+        model.addAttribute("userPrincipal", user);
         return "user_info";
     }
 }

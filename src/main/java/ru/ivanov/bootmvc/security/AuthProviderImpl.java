@@ -31,9 +31,6 @@ public class AuthProviderImpl implements AuthenticationProvider {
 
         String password = authentication.getCredentials().toString();
         if(!password.equals(userDetails.getPassword())) throw new BadCredentialsException("Incorrect password");
-        //UsernamePasswordAuthenticationToken implements Authentication
-        //этот объект помещается в Cookie сессию и при каждом запросе пользователя будет
-        //отправляться с запросом
         return new UsernamePasswordAuthenticationToken(userDetails,password, Collections.emptyList());
     }
 

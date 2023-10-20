@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 
 public interface RoleDao {
     List<Role> findAll();
-    Role findRoleByAuthority(String authority) throws NoSuchElementException;
+
     void save(Role role);
-    Role getRoleByName(String name);
 }

@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.ivanov.bootmvc.model.User;
+
 @Component
 public class UserValidator implements Validator {
     private final UserDetailsService userDetailsService;
+
     @Autowired
     public UserValidator(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -23,11 +25,11 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         User user = (User) o;
-        try{
+        try {
             userDetailsService.loadUserByUsername(user.getFirstName());
-        }catch (UsernameNotFoundException ignored){
+        } catch (UsernameNotFoundException ignored) {
             return; //все ок, пользователь не найден
         }
-        errors.rejectValue("firstName","Человек с тиким firstName уже существует");
+        errors.rejectValue("firstName", "Человек с тиким firstName уже существует");
     }
 }

@@ -49,14 +49,7 @@ public class UserDaoImpl implements UserDao {
         entityManager.persist(user);
     }
 
-    @Override
-    public Optional<User> findByUsername(String userName) {
-        //getSingleResult() - бросит ошибку если такого user нет
-        return Optional.of((User) entityManager
-                .createQuery("from User u join fetch u.roles where u.firstName = :userName")
-                .setParameter("userName", userName)
-                .getSingleResult());
-    }
+
     @Override
     public Optional<User> findByEmail(String email) {
         //getSingleResult() - бросит ошибку если такого user нет

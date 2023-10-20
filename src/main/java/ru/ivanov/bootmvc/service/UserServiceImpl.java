@@ -11,22 +11,20 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserDao userDao;
-    private PasswordEncoder passwordEncoder;
+    private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao,PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
-    @Transactional(readOnly = true)
     @Override
     public User getUserById(long id) {
         return userDao.getUserById(id);
@@ -40,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void updateUser(User updateUser) {
-        if (updateUser.getPassword()!=null && updateUser.getPassword().length() != 0) {
+        if (updateUser.getPassword() != null && updateUser.getPassword().length() != 0) {
             String encodedPassword = passwordEncoder.encode(updateUser.getPassword());
             updateUser.setPassword(encodedPassword);
         } else updateUser.setPassword(getEncodedPassword(updateUser.getId()));
@@ -58,8 +56,9 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         userDao.save(user);
     }
+
     @Override
-    public String getEncodedPassword(Long id){
+    public String getEncodedPassword(Long id) {
         return userDao.getPassword(id);
     }
 }
