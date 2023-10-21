@@ -8,6 +8,7 @@ import ru.ivanov.bootmvc.util.Init;
 
 @SpringBootApplication
 public class ProjectNameBootMvcApplication {
+
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(ProjectNameBootMvcApplication.class, args);
         Init init = context.getBean(Init.class);

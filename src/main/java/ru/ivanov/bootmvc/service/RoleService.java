@@ -1,11 +1,10 @@
-package ru.ivanov.bootmvc.dao;
+package ru.ivanov.bootmvc.service;
 
 import ru.ivanov.bootmvc.model.Role;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
-public interface RoleDao {
+public interface RoleService {
 
     List<Role> findAll();
 

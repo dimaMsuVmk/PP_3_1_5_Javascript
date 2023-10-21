@@ -20,7 +20,6 @@ public class RoleDaoImpl implements RoleDao {
         return entityManager.createQuery("from Role", Role.class).getResultList();
     }
 
-    @Transactional
     @Override
     public void save(Role role) {
         entityManager.persist(role);

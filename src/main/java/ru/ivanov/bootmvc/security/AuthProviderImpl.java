@@ -15,6 +15,7 @@ import java.util.Collections;
 
 @Component
 public class AuthProviderImpl implements AuthenticationProvider {
+
     private final UserService userService;
     private final UsersDetailService usersDetailService;
     @Autowired

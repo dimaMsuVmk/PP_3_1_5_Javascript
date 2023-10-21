@@ -10,6 +10,7 @@ import ru.ivanov.bootmvc.model.User;
 
 @Component
 public class UserValidator implements Validator {
+
     private final UserDetailsService userDetailsService;
 
     @Autowired

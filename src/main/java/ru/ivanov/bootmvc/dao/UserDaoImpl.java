@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
+
     @PersistenceContext
     private EntityManager entityManager;
 

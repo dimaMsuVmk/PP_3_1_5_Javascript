@@ -12,6 +12,7 @@ import ru.ivanov.bootmvc.model.User;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
     @GetMapping("")
     public String showUserInfo(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -4,21 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.ivanov.bootmvc.exception.NoSuchUserException;
-import ru.ivanov.bootmvc.exception.UserNotCreatedException;
 import ru.ivanov.bootmvc.model.Role;
 import ru.ivanov.bootmvc.model.User;
 import ru.ivanov.bootmvc.dao.RoleDao;
+import ru.ivanov.bootmvc.service.RoleService;
 import ru.ivanov.bootmvc.service.UserService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
@@ -40,15 +33,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class AdminRestController {
+
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleDao roleDao;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminRestController(UserService userService, PasswordEncoder passwordEncoder, RoleDao roleRepository) {
+    public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.roleDao = roleRepository;
+        this.roleService = roleService;
     }
 
     @GetMapping("/admin")
@@ -61,7 +53,7 @@ public class AdminRestController {
     }
     @GetMapping(value = "/roles")
     public ResponseEntity<Collection<Role>> getAllRoles() {
-        return new ResponseEntity<>(roleDao.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(roleService.findAll(), HttpStatus.OK);
     }
     @GetMapping("/roles/{id}")
     public ResponseEntity<Collection<Role>> getRole(@PathVariable("id") Long id) {
